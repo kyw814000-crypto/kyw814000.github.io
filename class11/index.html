@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ododog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playwrite+BE+WAL+Guides&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /*======== RESET CSS =========*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+        }
+
+        /*======== WRAP & BASE =========*/
+        #wrap {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /*=============================================================
+          PC 기본 스타일 (Desktop / 1025px 이상 기준)
+        =============================================================*/
+
+        /*======== HEADER =========*/
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 70px;
+            padding: 0 40px;
+            background: rgb(255, 124, 31);
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        /*======== MAIN =========*/
+        main {
+            width: 100%;
+            background: rgb(230, 222, 226);
+        }
+
+        main h2 {
+            text-align: center;
+            padding: 35px 20px 15px;
+            font-size: 28px;
+        }
+
+        /* video-box */
+        .video-box {
+            width: 100%;
+            max-width: 100%;
+            /*
+            높이 + overflow hidden : 원하는 높이에서 자름
+            height:200px;
+            overflow:hidden;
+            aspect-ratio : 가로 세로 비율을 고정 => 가로 크기에 따라 세로 설정
+            aspect-ratio:3/1;
+            */
+        }
+
+        .video-box video {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            object-fit: cover;
+        }
+
+        /* profile-box */
+        .profile-box {
+            padding: 40px 20px;
+        }
+
+        #card {
+            width: 300px;
+            background: #fff;
+            padding: 24px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        #card img {
+            width: 80%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #card p {
+            padding: 20px 0;
+            font-family: "Playwrite BE WAL Guides", cursive;
+        }
+
+        #card a {
+            display: block;
+            text-decoration: none;
+            width: 80%;
+            height: 50px;
+            background: #afdee4;
+            color: #000000;
+            font-weight: bold;
+            line-height: 50px;
+            margin: 0 auto;
+            font-family: "Roboto", sans-serif;
+        }
+
+        /* portfolio-box */
+        .portfolio-box {
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .portfolio-box .photo-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .portfolio-box .photo-list li {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .portfolio-box .photo-list li a {
+            display: block;
+            width: 100%;
+        }
+
+        .portfolio-box .photo-list img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .8);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal:target {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            /*display: flex;*/
+            /*flex-direction: column;*/
+            /*align-items: flex-end;*/
+            padding: 40px;
+            background: #fff;
+            max-width: 500px;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* slide-box */
+        .slide-box {
+            position: relative;
+            width: 60%;
+            max-width: 500px;
+            aspect-ratio: 1/1;
+            margin: 48px auto;
+        }
+
+        .slide-box li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: fade 15s infinite;
+        }
+
+        .slide-box li:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .slide-box li:nth-child(2) {
+            animation-delay: 5s;
+        }
+
+        .slide-box li:nth-child(3) {
+            animation-delay: 10s;
+        }
+
+        .slide-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /*======== FOOTER =========*/
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            padding: 0 40px;
+            background: rgb(255, 140, 0);
+        }
+
+        footer ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        /*=============================================================
+          태블릿 반응형 미디어 쿼리 (Tablet: 769px ~ 1024px)
+        =============================================================*/
+        @media screen and (max-width: 1024px) {
+            header {
+                padding: 0 25px;
+            }
+
+            .nav {
+                gap: 20px;
+            }
+
+            main h2 {
+                padding: 30px 15px 10px;
+                font-size: 24px;
+            }
+
+            .profile-box {
+                padding: 35px 15px;
+            }
+
+            .portfolio-box {
+                padding: 35px 15px;
+            }
+
+            .portfolio-box .photo-list {
+                gap: 15px;
+                max-width: 720px;
+            }
+
+            .slide-box {
+                width: 70%;
+                max-width: 450px;
+                margin: 40px auto;
+            }
+
+            footer {
+                padding: 0 25px;
+            }
+
+            footer ul {
+                gap: 20px;
+            }
+        }
+
+        /*=============================================================
+          모바일 반응형 미디어 쿼리 (Mobile: 768px 이하)
+        =============================================================*/
+        @media screen and (max-width: 768px) {
+            header {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            header h1 a {
+                font-size: 22px;
+            }
+
+            .nav {
+                gap: 15px;
+            }
+
+            .nav a {
+                font-size: 14px;
+            }
+
+            main h2 {
+                padding: 24px 10px 5px;
+                font-size: 20px;
+            }
+
+            .profile-box {
+                padding: 25px 10px;
+            }
+
+            #card {
+                width: 90%;
+                max-width: 300px;
+                padding: 20px 16px;
+            }
+
+            #card a {
+                width: 90%;
+                height: 44px;
+                line-height: 44px;
+            }
+
+            .portfolio-box {
+                padding: 25px 10px;
+            }
+
+            .portfolio-box .photo-list {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .portfolio-box .photo-list li {
+                width: 90%;
+                max-width: 320px;
+            }
+
+            .modal {
+                padding: 15px;
+            }
+
+            .modal-content {
+                padding: 35px 15px 15px;
+                max-width: 92%;
+                max-height: 85vh;
+            }
+
+            .modal-content img {
+                max-height: 65vh;
+                object-fit: contain;
+            }
+
+            .close-btn {
+                top: 5px;
+                right: 10px;
+                font-size: 24px;
+            }
+
+            .slide-box {
+                width: 85%;
+                max-width: 320px;
+                margin: 30px auto;
+            }
+
+            footer {
+                padding: 0 16px;
+                height: 50px;
+                font-size: 13px;
+            }
+
+            footer ul {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <header>
+            <h1><a href="#">ododog</a></h1>
+            <ul class="nav">
+                <li><a href="#">profile</a></li>
+                <li><a href="#">portfolio</a></li>
+                <li><a href="#">contact</a></li>
+            </ul>
+        </header>
+        <main>
+            <h2>안녕하세요~</h2>
+
+            <!-- video box start -->
+            <div class="video-box">
+                <video autoplay loop muted playsinline>
+                    <source src="img/trees.mp4" type="video/mp4">
+                    <p>브라우저에서 비디오를 지원하지 않습니다.</p>
+                </video>
+            </div>
+            <!-- video box end -->
+
+            <!-- profile box start -->
+            <div class="profile-box">
+                <div id="card">
+                    <img src="img/img_profile.jpg" alt="프로필 이미지">
+                    <h1>Mr.damgom</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ut labore et dolore magna
+                        aliqua.</p>
+                    <a href="http://google.com" target="_blank">pick me!!</a>
+                </div>
+            </div>
+            <!-- profile box end -->
+
+            <!-- portfolio box start -->
+            <div class="portfolio-box">
+                <ul class="photo-list">
+                    <li><a href="#modal1"><img src="img/img_photo_1.jpg"></a></li>
+                    <li><a href="#modal2"><img src="img/img_photo_2.jpg"></a></li>
+                    <li><a href="#modal3"><img src="img/img_photo_3.jpg"></a></li>
+                </ul>
+                <div id="modal1" class="modal">
+                    <div class="modal-content">
+                        <a href="#" class="close-btn">&times;</a>
+                        <img src="img/img_photo_1.jpg">
+                    </div>
+                </div>
+                <div id="modal2" class="modal">
+                    <div class="modal-content">
+                        <a href="#" class="close-btn">&times;</a>
+                        <img src="img/img_photo_2.jpg">
+                    </div>
+                </div>
+                <div id="modal3" class="modal">
+                    <div class="modal-content">
+                        <a href="#" class="close-btn">&times;</a>
+                        <img src="img/img_photo_3.jpg">
+                    </div>
+                </div>
+            </div>
+            <!-- portfolio box end -->
+
+            <!-- slide box start -->
+            <div class="slide-box">
+                <ul>
+                    <li><img src="img/img_photo_1.jpg"></li>
+                    <li><img src="img/img_photo_2.jpg"></li>
+                    <li><img src="img/img_photo_3.jpg"></li>
+                </ul>
+            </div>
+            <!-- slide box end -->
+
+
+
+        </main>
+        <footer>
+            <p>&copy;ododog 2026.</p>
+            <ul>
+                <li><a href="#">insta</a></li>
+                <li><a href="#">behance</a></li>
+            </ul>
+        </footer>
+    </div>
+</body>
+
+</html>
